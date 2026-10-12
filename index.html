@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCC Registry — India's Global Capability Centre Database</title>
+  <meta name="description"
+    content="Explore, compare, and evaluate Global Capability Centres (GCCs) in India. Find companies by city, sector, and country. Compare cities and get setup recommendations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo" id="nav-logo">
+        <span class="logo-mark">GCC</span>
+        <span class="logo-text">Registry</span>
+        <span class="logo-badge">India</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-btn active" data-page="explorer" id="nav-explorer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          GCC Explorer
+        </button>
+        <button class="nav-btn" data-page="compare" id="nav-compare">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="18" />
+            <rect x="14" y="3" width="7" height="18" />
+          </svg>
+          City Compare
+        </button>
+        <button class="nav-btn" data-page="advisor" id="nav-advisor">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4l3 3" />
+          </svg>
+          Setup Advisor
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE: GCC EXPLORER -->
+  <main id="page-explorer" class="page active">
+    <div class="page-hero">
+      <div class="container">
+        <h1 class="hero-title">GCC Explorer</h1>
+        <p class="hero-sub">Browse <span id="total-count">80</span> Global Capability Centres across India's leading
+          cities</p>
+      </div>
+    </div>
+
+    <div class="sample-data-banner">
+      <div class="container">
+        <div class="sample-data-inner">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
+          <span><strong>Sample Data</strong> &mdash; This database contains illustrative GCC entries for demonstration
+            purposes. Figures such as employee counts and year of establishment are approximate and may not reflect
+            current status. Always verify with official sources before making business decisions.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container explorer-layout">
+      <!-- Filter Sidebar -->
+      <aside class="filter-sidebar" aria-label="Filters">
+        <div class="filter-header">
+          <span class="filter-title">Filters</span>
+          <button class="filter-reset" id="reset-filters">Reset all</button>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filter-city">City</label>
+          <select class="filter-select" id="filter-city">
+            <option value="">All cities</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filter-sector">Sector</label>
+          <select class="filter-select" id="filter-sector">
+            <option value="">All sectors</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" for="filter-country">Parent Country</label>
+          <select class="filter-select" id="filter-country">
+            <option value="">All countries</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Year Established</label>
+          <div class="year-range">
+            <input type="number" class="filter-input year-input" id="filter-year-from" placeholder="From" min="1980"
+              max="2024" />
+            <span class="year-sep">to</span>
+            <input type="number" class="filter-input year-input" id="filter-year-to" placeholder="To" min="1980"
+              max="2024" />
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Verification</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="filter-verified" class="filter-checkbox" checked /> Verified
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="filter-estimated" class="filter-checkbox" checked /> Estimated
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-stats" id="filter-stats">
+          Showing <strong id="shown-count">80</strong> of <strong>80</strong>
+        </div>
+      </aside>
+
+      <!-- Main Table Area -->
+      <section class="table-section">
+        <div class="table-toolbar">
+          <div class="search-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input type="text" id="search-input" class="search-input" placeholder="Search company name..."
+              aria-label="Search companies" />
+          </div>
+          <div class="sort-wrap">
+            <select class="filter-select sort-select" id="sort-select" aria-label="Sort by">
+              <option value="company-asc">Company A-Z</option>
+              <option value="company-desc">Company Z-A</option>
+              <option value="year-asc">Year (oldest)</option>
+              <option value="year-desc">Year (newest)</option>
+              <option value="employees-desc">Employees (most)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container" role="region" aria-label="GCC data table" tabindex="0">
+          <table class="gcc-table" id="gcc-table">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Sector</th>
+                <th>Parent Country</th>
+                <th>Est.</th>
+                <th>Employees</th>
+                <th>Status</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="gcc-tbody"></tbody>
+          </table>
+          <div class="empty-state" id="empty-state" hidden>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <p>No results match your filters.</p>
+            <button class="btn-secondary" onclick="document.getElementById('reset-filters').click()">Reset
+              filters</button>
+          </div>
+        </div>
+
+        <div class="table-pagination" id="pagination"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- PAGE: CITY COMPARE -->
+  <main id="page-compare" class="page" hidden>
+    <div class="page-hero">
+      <div class="container">
+        <h1 class="hero-title">City Compare</h1>
+        <p class="hero-sub">Select up to 4 cities and compare them across key GCC metrics</p>
+      </div>
+    </div>
+
+    <div class="container compare-layout">
+      <div class="city-selector-row">
+        <div class="city-selector-label">Choose cities to compare</div>
+        <div class="city-chips" id="city-chips"></div>
+        <div class="city-selector-wrap">
+          <select class="filter-select city-dropdown" id="city-add-select" aria-label="Add city">
+            <option value="">+ Add a city</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="compare-content" id="compare-content">
+        <div class="compare-empty" id="compare-empty">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="3" y="3" width="7" height="18" />
+            <rect x="14" y="3" width="7" height="18" />
+          </svg>
+          <p>Add at least one city to begin comparing.</p>
+        </div>
+        <div class="compare-grid" id="compare-grid" hidden></div>
+
+        <div class="chart-section" id="chart-section" hidden>
+          <div class="chart-tabs" role="tablist">
+            <button class="chart-tab active" data-metric="gccCount" role="tab" id="tab-gcc">GCC Count</button>
+            <button class="chart-tab" data-metric="costScore" role="tab" id="tab-cost">Cost Score</button>
+            <button class="chart-tab" data-metric="talentScore" role="tab" id="tab-talent">Talent Score</button>
+            <button class="chart-tab" data-metric="incentiveScore" role="tab" id="tab-incentive">Incentives</button>
+            <button class="chart-tab" data-metric="officeRent" role="tab" id="tab-rent">Office Rent</button>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="compare-chart" aria-label="City comparison bar chart"></canvas>
+          </div>
+          <p class="chart-footnote">Scores are normalized 0-100. Cost score = affordability (higher = cheaper). Office
+            rent shown as midpoint INR/sq.ft/month.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PAGE: SETUP ADVISOR -->
+  <main id="page-advisor" class="page" hidden>
+    <div class="page-hero">
+      <div class="container">
+        <h1 class="hero-title">Setup Advisor</h1>
+        <p class="hero-sub">Answer a few questions and get a ranked shortlist of the best Indian cities for your GCC</p>
+      </div>
+    </div>
+
+    <div class="container advisor-layout">
+      <form class="advisor-form" id="advisor-form" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="adv-sector">Industry Sector</label>
+            <select class="form-select" id="adv-sector" required>
+              <option value="">Select your sector</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="adv-headcount">Initial Headcount</label>
+            <select class="form-select" id="adv-headcount" required>
+              <option value="">Select headcount range</option>
+              <option value="small">1-100 employees</option>
+              <option value="medium">101-500 employees</option>
+              <option value="large">501-2,000 employees</option>
+              <option value="xlarge">2,000+ employees</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="adv-budget">Annual Budget (USD)</label>
+            <select class="form-select" id="adv-budget" required>
+              <option value="">Select budget range</option>
+              <option value="lean">Under $1M</option>
+              <option value="moderate">$1M - $5M</option>
+              <option value="standard">$5M - $20M</option>
+              <option value="premium">$20M+</option>
+            </select>
+          </div>
+
+          <div class="form-group form-group--priority">
+            <label class="form-label">Top Priority</label>
+            <div class="priority-buttons" id="priority-group" role="group" aria-label="Select top priority">
+              <button type="button" class="priority-btn" data-priority="cost" id="priority-cost">
+                <span class="priority-icon">&#128176;</span>
+                <span class="priority-label">Cost</span>
+                <span class="priority-desc">Minimize setup & operational costs</span>
+              </button>
+              <button type="button" class="priority-btn" data-priority="talent" id="priority-talent">
+                <span class="priority-icon">&#127891;</span>
+                <span class="priority-label">Talent</span>
+                <span class="priority-desc">Access to skilled workforce</span>
+              </button>
+              <button type="button" class="priority-btn" data-priority="speed" id="priority-speed">
+                <span class="priority-icon">&#9889;</span>
+                <span class="priority-label">Speed</span>
+                <span class="priority-desc">Fastest time to operational</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group form-group--full">
+            <label class="form-label" for="adv-preferences">Additional Notes <span
+                class="form-optional">(optional)</span></label>
+            <textarea class="form-textarea" id="adv-preferences" rows="3"
+              placeholder="e.g. Prefer coastal city, need proximity to airport, BFSI regulatory experience..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn-primary" id="advisor-submit">Generate Recommendations</button>
+          <button type="button" class="btn-ghost" id="advisor-reset">Reset</button>
+        </div>
+      </form>
+
+      <div id="advisor-results" class="advisor-results" hidden>
+        <div class="results-header">
+          <h2 class="results-title">Your Top City Recommendations</h2>
+          <div class="scoring-legend">
+            <span class="legend-item"><span class="legend-dot legend-cost"></span>Cost</span>
+            <span class="legend-item"><span class="legend-dot legend-talent"></span>Talent</span>
+            <span class="legend-item"><span class="legend-dot legend-incentive"></span>Incentives</span>
+            <span class="legend-item"><span class="legend-dot legend-speed"></span>Speed</span>
+          </div>
+        </div>
+        <div class="result-cards" id="result-cards"></div>
+        <div class="scoring-formula" id="scoring-formula"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="logo-mark" style="font-size:13px">GCC</span>
+        <span class="footer-name">Registry India</span>
+        <span class="footer-sep">|</span>
+        <span class="footer-note">&#128204; <strong style="color:rgba(255,255,255,0.65)">Sample data only.</strong> For
+          demonstration use. Not investment advice.</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="data/gcc-data.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+
+</html>
